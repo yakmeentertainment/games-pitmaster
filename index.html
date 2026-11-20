@@ -103,12 +103,12 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
     <div class="logo">
       <h1>PITMASTER</h1>
       <div class="smoke">Smoke-Off</div>
-      <p>Babysit the smoker all night, survive the raccoons and the nosy neighbor, then sauce it up in the morning without hitting Uncle Gary's white shirt.</p>
+      <p>Babysit the smoker all night, survive the raccoons and the nosy neighbor, then sauce it up in the morning without hitting Uncle Marty's white shirt.</p>
     </div>
     <div id="levels"></div>
     <div class="how">
       <b>Night: smoke it.</b> Keep the temperature in the green (225–275°F). <b>Add logs</b> for fuel. Open the <b>vent</b> to run hotter. A closed vent runs cooler and makes the wood last. Tap raccoons and the neighbor to shoo them.<br><br>
-      <b>Morning: sauce it.</b> <b>Shake your phone</b> (or tap SHAKE) to build pressure, then <b>hold and drag</b> to squirt sauce on the meat. Don't hit Uncle Gary.
+      <b>Morning: sauce it.</b> <b>Shake your phone</b> (or tap SHAKE) to build pressure, then <b>hold and drag</b> to squirt sauce on the meat. Don't hit Uncle Marty.
     </div>
   </div>
 </div>
@@ -447,7 +447,7 @@ function endSmoke() {
       <span>Flare-ups</span><b class="${S.flares ? 'bad' : ''}">${S.flares}</b>
       <span>Smoke score</span><b>${smokeScore}</b>
     </div>
-    <p>Now for the sauce. <b>Shake</b> to build pressure, then <b>hold and drag</b> to squirt. Cover the meat, and stay off Uncle Gary's white shirt.</p>
+    <p>Now for the sauce. <b>Shake</b> to build pressure, then <b>hold and drag</b> to squirt. Cover the meat, and stay off Uncle Marty's white shirt.</p>
     <div class="btns"><button id="sgo">Sauce it!</button></div>`);
   $('sgo').onclick = () => { initAudio(); askMotion(); hideOverlay(); startSauce(); };
 }
@@ -675,9 +675,9 @@ $('shakeBtn').addEventListener('pointerdown', e => {
   Q.pressure = Math.min(100, Q.pressure + 8); Q.bottleShake = 0.25; sfx.shake();
 });
 
-const GARY_HIT = ['HEY! My good shirt!', 'GARY GOT SAUCED!', 'Not the white shirt!', 'Come ON, man!', 'I just washed this!'];
-const GARY_SNEAK = ['Just gonna sneak a bite...', 'Quality control!', 'Don\'t mind me...', 'Ooh, is that ready?'];
-const GARY_IDLE = ['Smells great out here!', 'Need any help?', 'My brother-in-law uses gas.', 'Is it ready yet?'];
+const MARTY_HIT = ['HEY! My good shirt!', 'MARTY GOT SAUCED!', 'Not the white shirt!', 'Come ON, man!', 'I just washed this!'];
+const MARTY_SNEAK = ['Just gonna sneak a bite...', 'Quality control!', 'Don\'t mind me...', 'Ooh, is that ready?'];
+const MARTY_IDLE = ['Smells great out here!', 'Need any help?', 'My brother-in-law uses gas.', 'Is it ready yet?'];
 
 function garyBody(g) { const gx = Q.gary.x; return { x0: gx - 30, x1: gx + 30, top: g.tableY - 150, head: g.tableY - 168 }; }
 
@@ -697,8 +697,8 @@ function updateSauce(dt) {
     const d = target - G.x;
     if (Math.abs(d) < 4 && !G.sneak) {
       G.wait = rnd(0.4, 1.4) / L.gary;
-      if (Math.random() < 0.35 + 0.15 * L.gary) { G.sneak = true; G.sneakT = rnd(2, 3.5); G.say = GARY_SNEAK[Math.floor(Math.random() * GARY_SNEAK.length)]; G.sayT = 2; }
-      else { G.tx = rnd(36, W - 36); if (Math.random() < 0.3) { G.say = GARY_IDLE[Math.floor(Math.random() * GARY_IDLE.length)]; G.sayT = 2; } }
+      if (Math.random() < 0.35 + 0.15 * L.gary) { G.sneak = true; G.sneakT = rnd(2, 3.5); G.say = MARTY_SNEAK[Math.floor(Math.random() * MARTY_SNEAK.length)]; G.sayT = 2; }
+      else { G.tx = rnd(36, W - 36); if (Math.random() < 0.3) { G.say = MARTY_IDLE[Math.floor(Math.random() * MARTY_IDLE.length)]; G.sayT = 2; } }
     } else G.x += Math.sign(d) * Math.min(Math.abs(d), sp * dt);
     if (G.sneak) { G.sneakT -= dt; if (G.sneakT <= 0) { G.sneak = false; G.tx = rnd(36, W - 36); } }
   }
@@ -720,7 +720,7 @@ function updateSauce(dt) {
     if (d.x > gb.x0 && d.x < gb.x1 && d.y >= gb.top && d.y < g.tableY - 6) {
       d.dead = true;
       if (G.stains.length < 160) G.stains.push({ x: d.x - G.x, y: d.y - gb.top + rnd(0, 20), r: rnd(3, 6) });
-      if (Q.hitCd <= 0) { Q.hits++; Q.hitCd = 0.45; G.say = GARY_HIT[Math.floor(Math.random() * GARY_HIT.length)]; G.sayT = 1.6; G.sneak = false; G.tx = G.x + (G.x < W / 2 ? 120 : -120); G.wait = 0; sfx.splat(); try { navigator.vibrate && navigator.vibrate(25); } catch (_) {} }
+      if (Q.hitCd <= 0) { Q.hits++; Q.hitCd = 0.45; G.say = MARTY_HIT[Math.floor(Math.random() * MARTY_HIT.length)]; G.sayT = 1.6; G.sneak = false; G.tx = G.x + (G.x < W / 2 ? 120 : -120); G.wait = 0; sfx.splat(); try { navigator.vibrate && navigator.vibrate(25); } catch (_) {} }
       continue;
     }
     if (d.y >= g.meatTop + 4 && d.x > mx0 && d.x < mx1) {
@@ -776,7 +776,7 @@ function drawMeat(c, x, top, w, h) {
   c.stroke(path);
   c.restore();
 }
-function drawGary(c, g) {
+function drawMarty(c, g) {
   const G = Q.gary, gb = garyBody(g), x = G.x;
   c.save(); c.strokeStyle = INK; c.lineWidth = 2.5; c.lineJoin = 'round';
   const bob = Math.sin(time * 8) * (G.wait > 0 ? 0 : 1.5);
@@ -821,7 +821,7 @@ function drawSauce() {
   c.strokeStyle = '#8a5a34'; c.lineWidth = 2; for (let x = 0; x < W; x += 26) { c.beginPath(); c.moveTo(x, fy); c.lineTo(x, g.tableY); c.stroke(); }
   c.fillStyle = '#8a5a34'; for (let x = 0; x < W; x += 26) { c.beginPath(); c.moveTo(x, fy); c.lineTo(x + 13, fy - 9); c.lineTo(x + 26, fy); c.fill(); }
   // gary behind table
-  drawGary(c, g);
+  drawMarty(c, g);
   // table (red checkered cloth)
   c.fillStyle = '#fff'; c.fillRect(0, g.tableY, W, H - g.tableY);
   c.fillStyle = '#d63a2f';
@@ -866,7 +866,7 @@ function endSauce() {
   persist();
   const quotes = [
     ['"I\'ve had better at a gas station."', '"Did you even light the fire?"'],
-    ['"Edible. Barely. Gary seems to like it."', '"Not bad for a first-timer."'],
+    ['"Edible. Barely. Marty seems to like it."', '"Not bad for a first-timer."'],
     ['"Now THAT\'S some backyard barbecue."', '"I\'d come back for seconds."'],
     ['"Pitmaster. Absolute pitmaster."', '"Somebody get this person a trophy."'],
   ][stars];
@@ -885,7 +885,7 @@ function endSauce() {
       <span>Smoke score</span><b>${result.smokeScore}</b>
       <span class="h">The sauce</span>
       <span>Meat covered</span><b>${Math.round(covAvg * 100)}%</b>
-      <span>Uncle Gary splats</span><b class="${Q.hits ? 'bad' : ''}">${Q.hits}${Q.hits ? ' (−' + garyPen + ')' : ''}</b>
+      <span>Uncle Marty splats</span><b class="${Q.hits ? 'bad' : ''}">${Q.hits}${Q.hits ? ' (−' + garyPen + ')' : ''}</b>
       <span>Sauce score</span><b>${sauceScore}</b>
     </div>
     ${stars === 0 ? '<p>You need at least one star to unlock the next cook.</p>' : ''}
